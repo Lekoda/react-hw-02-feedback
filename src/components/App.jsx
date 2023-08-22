@@ -36,25 +36,29 @@ export class App extends Component {
 
   render() {
     const { good, neutral, bad } = this.state;
+    const totalFeedback = this.countTotalFeedback();
+
+    if (totalFeedback === 0) {
+      toast.error('no feedback given');
+    }
+
     return (
       <>
         <Section title="Please leave feedback">
           <FeedbackOptions onClick={this.handleChangeClick} />
         </Section>
         <Section title="Statistics">
-          {this.countTotalFeedback() === 0 ? (
-            toast.custom('There is no feedback')
-          ) : (
+          {totalFeedback === 0 ? null : (
             <Statistics
               good={good}
               neutral={neutral}
               bad={bad}
-              total={this.countTotalFeedback()}
+              total={totalFeedback}
               positive={this.countPositiveFeedbackPercentage()}
             />
           )}
-          <Toaster />
         </Section>
+        <Toaster position="top-center" />
         <GlobalStyle />
       </>
     );
